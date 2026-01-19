@@ -194,26 +194,47 @@ function generateTmuxContext(
     (p) => p.session === currentSession && isServerProcess(p.command)
   )
   
-  let context = `## tmux Context\n`
-  context += `**Session:** ${currentSession}\n\n`
-  
-  context += `**Windows:**\n`
+  let context = `## tmux Integration
+
+### Current Session: ${currentSession}
+
+**Windows:**
+`
   for (const win of windows) {
     const mainPane = win.panes[0]
     const command = mainPane?.command || "unknown"
-    context += `${win.index}. ${win.name} - ${command}\n`
+    context += `- ${win.index}. ${win.name} (${command})\n`
   }
   
   if (serverPanes.length > 0) {
-    context += `\n**Running Servers:**\n`
+    context += `
+**Running Servers:**
+`
     for (const pane of serverPanes) {
       const win = windows.find((w) => w.index === pane.window)
       const winName = win?.name || `window-${pane.window}`
-      context += `- Window ${pane.window} (${winName}): ${pane.command} (path: ${pane.path})\n`
+      context += `- Window ${pane.window} (${winName}): \`${pane.command}\` at ${pane.path}\n`
     }
   }
   
-  context += `\n**Available tmux tools:** tmux_read_logs, tmux_restart_server, tmux_send_command, tmux_list\n`
+  context += `
+### Available Tools
+- \`tmux_read_logs\` - Read pane output, errors are auto-highlighted
+- \`tmux_restart_server\` - Send Ctrl-C and restart command
+- \`tmux_send_command\` - Send any command to a pane
+- \`tmux_list\` - List sessions/windows/panes
+
+### When to Use
+- **Server errors**: Use \`tmux_read_logs\` to check server output when something fails
+- **Code not updating**: Use \`tmux_restart_server\` if hot reload isn't picking up changes
+- **Run commands**: Use \`tmux_send_command\` to run builds, tests, or other commands
+
+### Debugging Workflow
+1. Make code changes
+2. If error occurs, check server logs with \`tmux_read_logs\`
+3. If changes aren't picked up, restart with \`tmux_restart_server\`
+4. Verify fix by checking logs again
+`
   
   return context
 }
