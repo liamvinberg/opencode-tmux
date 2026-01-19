@@ -1,0 +1,28 @@
+{
+  "name": "opencode-tmux",
+  "version": "0.1.0",
+  "description": "Tmux integration plugin for OpenCode - auto-inject tmux context and provide tmux tools",
+  "main": "index.ts",
+  "type": "module",
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "tmux",
+    "terminal",
+    "multiplexer"
+  ],
+  "author": "Liam Vinberg",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liamjv1/opencode-tmux"
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": "*"
+  },
+  "devDependencies": {
+    "@opencode-ai/plugin": "^1.1.25",
+    "@types/bun": "^1.2.0",
+    "typescript": "^5.0.0"
+  }
+}
